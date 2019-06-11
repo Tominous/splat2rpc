@@ -37,22 +37,22 @@ The Nintendo Switch currently doesn't (and probably will never) support Discord,
 
 ## Commands
 ### MAINTENANCE COMMANDS
-**!dev** - Toggle development mode on or off.
-**!help** - View this help document.
-**!quit** - Close the program.
+* **!dev** - Toggle development mode on or off.
+* **!help** - View this help document.
+* **!quit** - Close the program.
 
 ### SCHEDULE COMMANDS
-**!schedule** - View the schedule for all in-game events.
+* **!schedule** - View the schedule for all in-game events.
 
 ### PRESENCE COMMANDS
-**!hero <1/2/3/4/5>** - Set Hero Mode presence. Select the number of the sector you are in.
-**!octo** - Set Octo Expansion presence.
-**!multi** - Set multiplayer presence.
-**!multiloop** - Set multiplayer presence then automatically start again (a great option if you're going to be queuing for a while).
-**!salmon** - Set Salmon Run presence.
-**!splatfest** - Set Splatfest presence.
-**!private** - Set Private Battle presence.
-**!clear** - Remove your presence from Discord.
+* **!hero <1/2/3/4/5>** - Set Hero Mode presence. Select the number of the sector you are in.
+* **!octo** - Set Octo Expansion presence.
+* **!multi** - Set multiplayer presence.
+* **!multiloop** - Set multiplayer presence then automatically start again (a great option if you're going to be queuing for a while).
+* **!salmon** - Set Salmon Run presence.
+* **!splatfest** - Set Splatfest presence.
+* **!private** - Set Private Battle presence.
+* **!clear** - Remove your presence from Discord.
 
 ## Future plans
 
