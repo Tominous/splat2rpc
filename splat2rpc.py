@@ -312,6 +312,7 @@ try:
             print(c.info + "!hero <1/2/3/4/5> - Set Hero Mode presence. Select the number of the sector you are in.")
             print(c.info + "!octo - Set Octo Expansion presence.")
             print(c.info + "!multi - Set multiplayer presence.")
+            print(c.info + "!multiloop - Set multiplayer presence then automatically start again - a great option if you're going to be queuing for a while.")
             print(c.info + "!salmon - Set Salmon Run presence.")
             print(c.info + "!splatfest - Set Splatfest presence.")
             print(c.info + "!private - Set Private Battle presence.")
