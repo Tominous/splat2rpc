@@ -5,7 +5,8 @@
 ![version](https://img.shields.io/badge/version-1.0.4-yellow.svg)
 ![made-with-python](https://img.shields.io/badge/Made%20with-Python-informational.svg)
 ![python-versions](https://img.shields.io/badge/python-3.5%20|%203.6%20|%203.7-critical.svg)
-![MIT-license](https://img.shields.io/badge/license-GPLv3-green.svg)
+![GPL-license](https://img.shields.io/badge/license-GPLv3-green.svg)
+[![pypresence](https://img.shields.io/badge/using-pypresence-00bb88.svg?logo=discord&logoWidth=20)](https://github.com/qwertyquerty/pypresence)
 
 *Thanks to [splat2api](https://github.com/splat2api/api) and [@Terax235](https://github.com/Terax235) for providing the data used for this application!*
 
