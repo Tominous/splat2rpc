@@ -138,6 +138,8 @@ try:
         print(c.info + "5. " + schedule['league']['map-a'])
         print(c.info + "6. " + schedule['league']['map-b'])
         print(c.blank)
+        print(c.info + "7. Exit")
+        print(c.blank)
         print(c.smile + "Splatoon 2 API provided by api.splatoon.terax235.me!")
         option = ''
         while option == '':
@@ -160,10 +162,14 @@ try:
                 setPresence(None,details="League Battle",state=schedule['league']['mode'],large_image=schedule['league']['map-a-id'],large_text=schedule['league']['map-a'],small_image=schedule['league']['mode-key'],small_text=schedule['league']['mode'])
             elif option == 6:
                 setPresence(None,details="League Battle",state=schedule['league']['mode'],large_image=schedule['league']['map-b-id'],large_text=schedule['league']['map-b'],small_image=schedule['league']['mode-key'],small_text=schedule['league']['mode'])
+            elif option == 7:
+                print(c.success + "Cancelling...")
+                return 1
             else:
                 print(c.warn + "Invalid input!")
                 option = ''
                 continue
+            return 0
 
     def setSalmon():
         jsonschedule = getSchedules("salm")
@@ -197,6 +203,8 @@ try:
         print(c.warn + "Here are the teams for this Splatfest!")
         print(c.info + "1. " + schedule['phrases']['alpha_long'])
         print(c.info + "2. " + schedule['phrases']['bravo_long'])
+        print(c.blank)
+        print(c.info + "3. Exit")
         option = ''
         while option == '':
             print(c.info + "Which team are you supporting?")
@@ -210,6 +218,9 @@ try:
                 setPresence(None,details="Splatfest",state="Team " + schedule['phrases']['alpha_short'],large_image="splatfest",large_text="Shifty Station",small_image="turf_war",small_text="Turf War")
             elif option == 2:
                 setPresence(None,details="Splatfest",state="Team " + schedule['phrases']['bravo_short'],large_image="splatfest",large_text="Shifty Station",small_image="turf_war",small_text="Turf War")
+            elif option == 3:
+                print(c.success + "Cancelling...")
+                return
             else:
                 print(c.warn + "Invalid input!")
                 option = ''
@@ -326,6 +337,18 @@ try:
 
         elif command.startswith("!octo"):
             setPresence("octo")
+
+        elif command.startswith("!multiloop"):
+            endloop = 0
+            try:
+                while endloop != 1:
+                    print(c.warn + "To exit the loop, press CTRL+C.")
+                    endloop = setMulti()
+            except KeyboardInterrupt:
+                print()
+                print(c.success + "Cancelling...")
+                endloop = 1
+                continue
 
         elif command.startswith("!multi"):
             setMulti()

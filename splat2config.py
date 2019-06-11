@@ -8,7 +8,7 @@ class configs():
     """
 
     client = 587656557265682433
-    ver = "1.0.2"
+    ver = "1.0.3"
 
 class schedules():
     """
