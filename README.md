@@ -7,6 +7,8 @@
 ![python-versions](https://img.shields.io/badge/python-3.5%20|%203.6%20|%203.7-critical.svg)
 ![MIT-license](https://img.shields.io/badge/license-GPLv3-green.svg)
 
+*Thanks to [splat2api](https://github.com/splat2api/api) and [@Terax235](https://github.com/Terax235) for providing the data used for this application!*
+
 *promo image coming soon (as soon as I get access to a Windows computer lol)
 
 ###### Splatoon 2 + Discord Rich Presence = <3
