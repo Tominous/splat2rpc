@@ -3,6 +3,7 @@ try:
     import sys
     import os
     import random
+    from json import loads
 
     try:
         from pypresence import Presence
@@ -49,6 +50,17 @@ try:
             sys.exit(1)
         print(c.success + "Your presence has been cleared! Discord may take a few seconds to update.")
 
+    def getSchedules(mode):
+        if mode == "main":
+            return requests.get(s.main_schedule).json()
+        elif mode == "salm":
+            return requests.get(s.salm_schedule).json()
+        elif mode == "splf":
+            return requests.get(s.splf_schedule).json()
+        else:
+            print(c.fail + "Something's gone wrong! Please report this issue at https://git.io/splat2 and let me know what you were doing when you got here.")
+            print(c.warn + "You should be able to try again. Restart this program then try doing whatever you were doing again.")
+
     def setPresence(preset,details='',state='',large_image='',large_text='',small_image='',small_text=''):
         """
         This function sets the Discord Rich Presence.
@@ -81,6 +93,127 @@ try:
             print(c.success + "Your presence has been updated! Discord may take a few seconds to update.")
         else:
             pass
+
+    def setMulti():
+        jsonschedule = getSchedules("main")
+        # {regular:[mode,mode-key,map-a,map-a-key,map-b,map-b-key]}
+        schedule = {
+            "regular": {
+                "mode": jsonschedule['regular']['rule']['name'],
+                "mode-key": jsonschedule['regular']['rule']['key'],
+                "map-a": jsonschedule['regular']['stage_a']['name'],
+                "map-a-id": str(jsonschedule ['regular']['stage_a']['id']),
+                "map-b": jsonschedule['regular']['stage_b']['name'],
+                "map-b-id": str(jsonschedule ['regular']['stage_b']['id'])
+            },
+            "ranked": {
+                "mode": jsonschedule['gachi']['rule']['name'],
+                "mode-key": jsonschedule['gachi']['rule']['key'],
+                "map-a": jsonschedule['gachi']['stage_a']['name'],
+                "map-a-id": str(jsonschedule ['gachi']['stage_a']['id']),
+                "map-b": jsonschedule['gachi']['stage_b']['name'],
+                "map-b-id": str(jsonschedule ['gachi']['stage_b']['id'])
+            },
+            "league": {
+                "mode": jsonschedule['league']['rule']['name'],
+                "mode-key": jsonschedule['league']['rule']['key'],
+                "map-a": jsonschedule['league']['stage_a']['name'],
+                "map-a-id": str(jsonschedule ['league']['stage_a']['id']),
+                "map-b": jsonschedule['league']['stage_b']['name'],
+                "map-b-id": str(jsonschedule ['league']['stage_b']['id'])
+            }
+        }
+
+        print(c.success + "Got the current modes! Here are your options...")
+
+        print(c.warn + "Regular Battle: " + schedule['regular']['mode'])
+        print(c.info + "1. " + schedule['regular']['map-a'])
+        print(c.info + "2. " + schedule['regular']['map-b'])
+        print(c.blank)
+        print(c.warn + "Ranked Battle: " + schedule['ranked']['mode'])
+        print(c.info + "3. " + schedule['ranked']['map-a'])
+        print(c.info + "4. " + schedule['ranked']['map-b'])
+        print(c.blank)
+        print(c.warn + "League Battle: " + schedule['league']['mode'])
+        print(c.info + "5. " + schedule['league']['map-a'])
+        print(c.info + "6. " + schedule['league']['map-b'])
+        print(c.blank)
+        print(c.smile + "Splatoon 2 API provided by api.splatoon.terax235.me!")
+        option = ''
+        while option == '':
+            print(c.info + "Which game are you in?")
+            try:
+                option = int(input(c.ask))
+            except Exception as e:
+                print(c.warn + "Invalid input!")
+                option = ''
+                continue
+            if option == 1:
+                setPresence(None,details="Regular Battle",state=schedule['regular']['mode'],large_image=schedule['regular']['map-a-id'],large_text=schedule['regular']['map-a'],small_image=schedule['regular']['mode-key'],small_text=schedule['regular']['mode'])
+            elif option == 2:
+                setPresence(None,details="Regular Battle",state=schedule['regular']['mode'],large_image=schedule['regular']['map-b-id'],large_text=schedule['regular']['map-b'],small_image=schedule['regular']['mode-key'],small_text=schedule['regular']['mode'])
+            elif option == 3:
+                setPresence(None,details="Ranked Battle",state=schedule['ranked']['mode'],large_image=schedule['ranked']['map-a-id'],large_text=schedule['ranked']['map-a'],small_image=schedule['ranked']['mode-key'],small_text=schedule['ranked']['mode'])
+            elif option == 4:
+                setPresence(None,details="Ranked Battle",state=schedule['ranked']['mode'],large_image=schedule['ranked']['map-b-id'],large_text=schedule['ranked']['map-b'],small_image=schedule['ranked']['mode-key'],small_text=schedule['ranked']['mode'])
+            elif option == 5:
+                setPresence(None,details="League Battle",state=schedule['league']['mode'],large_image=schedule['league']['map-a-id'],large_text=schedule['league']['map-a'],small_image=schedule['league']['mode-key'],small_text=schedule['league']['mode'])
+            elif option == 6:
+                setPresence(None,details="League Battle",state=schedule['league']['mode'],large_image=schedule['league']['map-b-id'],large_text=schedule['league']['map-b'],small_image=schedule['league']['mode-key'],small_text=schedule['league']['mode'])
+            else:
+                print(c.warn + "Invalid input!")
+                option = ''
+                continue
+
+    def setSalmon():
+        jsonschedule = getSchedules("salm")
+        if "active" in jsonschedule and "false" in jsonschedule:
+            print(c.fail + "Salmon Run is closed right now! Come back soon.")
+            return
+
+        schedule = {
+            "start": jsonschedule['start_time'],
+            "end": jsonschedule['end_time'],
+            "map": jsonschedule['stage']['name'],
+            "map-key": jsonschedule['stage']['name'].lower().replace("'","").replace(" ","")
+        }
+
+        setPresence(None,details="Salmon Run",state=schedule['map'],large_image=schedule["map-key"],large_text=schedule['map'],small_image="salmon_run",small_text="Grizzco")
+
+
+    def setSplatfest():
+        jsonschedule = getSchedules("splf")
+
+        schedule = {
+            "start": str(jsonschedule[0]['times']['start']),
+            "end": str(jsonschedule[0]['times']['end']),
+            "phrases": jsonschedule[0]['names']
+        }
+
+        if int(time.time()) < int(schedule['start']) or int(time.time()) > int(schedule['end']):
+            print(c.fail + "The next Splatfest hasn't started yet! Come back soon.")
+            return
+
+        print(c.warn + "Here are the teams for this Splatfest!")
+        print(c.info + "1. " + schedule['phrases']['alpha_long'])
+        print(c.info + "2. " + schedule['phrases']['bravo_long'])
+        option = ''
+        while option == '':
+            print(c.info + "Which team are you supporting?")
+            try:
+                option = int(input(c.ask))
+            except Exception as e:
+                print(c.warn + "Invalid input!")
+                option = ''
+                continue
+            if option == 1:
+                setPresence(None,details="Splatfest",state="Team " + schedule['phrases']['alpha_short'],large_image="splatfest",large_text="Shifty Station",small_image="turf_war",small_text="Turf War")
+            elif option == 2:
+                setPresence(None,details="Splatfest",state="Team " + schedule['phrases']['bravo_short'],large_image="splatfest",large_text="Shifty Station",small_image="turf_war",small_text="Turf War")
+            else:
+                print(c.warn + "Invalid input!")
+                option = ''
+                continue
 
     def setCustom():
         print(c.warn + "Here be dragons!")
@@ -123,7 +256,7 @@ try:
         print(c.info + "Information used in this app is courtesy of Terax235 (api.splatoon.terax235.me)!")
         onlver = requests.get("https://maxicc.github.io/splat2rpc/VERSION.txt").text.rstrip()
         if x.ver != onlver:
-            print(c.warn + "You're out-of-date! The latest version on GitHub is " + str(onlver) + " and you're on " + x.ver + ".")
+            print(c.warn + "Something's wrong! The latest version on GitHub is " + str(onlver) + " and you're on " + x.ver + ".")
         else:
             print(c.success + "You're up-to-date! Thanks for using the latest version.")
         print(c.info + "Questions? Comments? Feature requests? Head to https://git.io/splat2!")
@@ -178,7 +311,7 @@ try:
             sys.exit(0)
 
         elif command.startswith("!schedule"):
-            getSchedules()
+            print(c.warn + "This command is currently not working. Please use !multi to see multiplayer rotations or !salmon to see the Salmon Run schedule.")
 
         elif command.startswith("!hero"):
             params = command.split()

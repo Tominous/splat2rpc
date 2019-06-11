@@ -2,3 +2,5 @@
 *.jpg
 *.pyc
 .DS_Store
+*.png
+img/maps/files.txt

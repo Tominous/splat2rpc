@@ -8,7 +8,7 @@ class configs():
     """
 
     client = 587656557265682433
-    ver = "0.1.0"
+    ver = "1.0.0"
 
 class schedules():
     """
@@ -18,4 +18,4 @@ class schedules():
 
     main_schedule = "http://api.splatoon.terax235.me/schedules/current"
     splf_schedule = "http://api.splatoon.terax235.me/festivals/"
-    salm_scheucle = "http://api.splatoon.terax235.me/coop_schedules/current"
+    salm_schedule = "http://api.splatoon.terax235.me/coop_schedules/current"
