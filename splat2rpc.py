@@ -317,13 +317,12 @@ try:
             params = command.split()
             if len(params) == 1:
                 print(c.warn + "You didn't add which sector you're in! Do !hero <sector>, for example if you're in Cephalon HQ, use !hero 5.")
-                
-            options = ["1","2","3","4","5"]
-
-            if params[1] not in options:
-                print(c.warn + "That's not a valid option.")
             else:
-                setPresence("single-" + params[1])
+                options = ["1","2","3","4","5"]
+                if params[1] not in options:
+                    print(c.warn + "That's not a valid option.")
+                else:
+                    setPresence("single-" + params[1])
 
         elif command.startswith("!octo"):
             setPresence("octo")
