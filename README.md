@@ -14,7 +14,9 @@
 
 ###### Splatoon 2 + Discord Rich Presence = <3
 
-![A demonstration of the rich presence in action](https://f.maxic.me/Screen-Recording-2019-06-12-16-44-07.gif)
+![A demonstration of the rich presence in action](https://l.maxic.me/U25UA)
+
+[*Click here to see a video of splat2rpc in action!*](https://l.maxic.me/aO-oT)
 
 ## About
 
