@@ -26,27 +26,38 @@ try:
 
     # Define the status class
     class status():
-        ingame = 0
         devmode = False
+        currqueue = ''
         currmap = ''
         currmode = ''
         presets = {
             "example":["details","state","large_image","large_text","small_image","small_text"],
             "square":["In Menus","Inkopolis Square","splatoon2-colour","Playing Splatoon 2","maxic","Running splat2rpc v" + x.ver + " by maxic#9999! Download it at https://git.io/splat2 😊"],
             "octo":["Octo Expansion","Deepsea Metro","octo","Playing Splatoon 2","maxic","Running splat2rpc v" + x.ver + " by maxic#9999! Download it at https://git.io/splat2 😊"],
-            "single-1":["Hero Mode","Tentakeel Outpost","tentakeel","Octo Canyon","maxic","Running splat2rpc v" + x.ver + " by maxic#9999! Download it at https://git.io/splat2 😊"],
-            "single-2":["Hero Mode","Suction-Cup Lookout","suction","Octo Canyon","maxic","Running splat2rpc v" + x.ver + " by maxic#9999! Download it at https://git.io/splat2 😊"],
-            "single-3":["Hero Mode","Beaker's Depot","beakers","Octo Canyon","maxic","Running splat2rpc v" + x.ver + " by maxic#9999! Download it at https://git.io/splat2 😊"],
-            "single-4":["Hero Mode","Slimeskin Garrison","slimeskin","Octo Canyon","maxic","Running splat2rpc v" + x.ver + " by maxic#9999! Download it at https://git.io/splat2 😊"],
-            "single-5":["Hero Mode","Cephalon HQ","cephalon","Octo Canyon","maxic","Running splat2rpc v" + x.ver + " by maxic#9999! Download it at https://git.io/splat2 😊"]
+            "single-1":["Hero Mode","Tentakeel Outpost","tentakeel","Sector 1","maxic","Running splat2rpc v" + x.ver + " by maxic#9999! Download it at https://git.io/splat2 😊"],
+            "single-2":["Hero Mode","Suction-Cup Lookout","suction","Sector 2","maxic","Running splat2rpc v" + x.ver + " by maxic#9999! Download it at https://git.io/splat2 😊"],
+            "single-3":["Hero Mode","Beaker's Depot","beakers","Sector 3","maxic","Running splat2rpc v" + x.ver + " by maxic#9999! Download it at https://git.io/splat2 😊"],
+            "single-4":["Hero Mode","Slimeskin Garrison","slimeskin","Sector 4","maxic","Running splat2rpc v" + x.ver + " by maxic#9999! Download it at https://git.io/splat2 😊"],
+            "single-5":["Hero Mode","Cephalon HQ","cephalon","Sector 5","maxic","Running splat2rpc v" + x.ver + " by maxic#9999! Download it at https://git.io/splat2 😊"]
         }
+
+    def setStatus(clear,queue='',mode='',map=''):
+        if clear == 1:
+            status.currmode = ''
+            status.currmap = ''
+            status.currqueue = ''
+        else:
+            status.currmode = mode
+            status.currmap = map
+            status.currqueue = queue
 
     def clearPresence():
         try:
             dp.clear()
+            setStatus(1)
         except Exception as e:
             print(c.fail + "Couldn't clear your presence! :(")
-            print(c.fail + "The error message from pypresence is: " + str(e))
+            print(c.fail + "Please report this error at https://git.io/s2issues: " + str(e))
             sys.exit(1)
         print(c.success + "Your presence has been cleared! Discord may take a few seconds to update.")
 
@@ -66,6 +77,7 @@ try:
         This function sets the Discord Rich Presence.
         [details,state,large_image,large_text,small_image,small_text]
         """
+
         silent = 0
         if preset != None:
             if preset.endswith("_silent"):
@@ -79,6 +91,8 @@ try:
             small_image = status.presets.get(preset)[4]
             small_text = status.presets.get(preset)[5]
 
+        setStatus(0,details,state,large_text)
+
         if status.devmode == True:
             details = "DEV MODE | " + str(details)
         try:
@@ -90,11 +104,11 @@ try:
             print(c.fail + "The error message from pypresence is: " + str(e))
             sys.exit(1)
         if silent == 0:
-            print(c.success + "Your presence has been updated! Discord may take a few seconds to update.")
+            print(c.success + "Updating presence to " + status.currqueue + ": " + status.currmode + " - " + status.currmap + ".")
         else:
             pass
 
-    def setMulti():
+    def setMulti(loop=0):
         jsonschedule = getSchedules("main")
         # {regular:[mode,mode-key,map-a,map-a-key,map-b,map-b-key]}
         schedule = {
@@ -124,46 +138,48 @@ try:
             }
         }
 
-        print(c.success + "Got the current modes! Here are your options...")
+        if loop == 0:
+            print(c.success + "Got the current modes! Here are your options...")
 
-        print(c.warn + "Regular Battle: " + schedule['regular']['mode'])
-        print(c.info + "1. " + schedule['regular']['map-a'])
-        print(c.info + "2. " + schedule['regular']['map-b'])
-        print(c.blank)
-        print(c.warn + "Ranked Battle: " + schedule['ranked']['mode'])
-        print(c.info + "3. " + schedule['ranked']['map-a'])
-        print(c.info + "4. " + schedule['ranked']['map-b'])
-        print(c.blank)
-        print(c.warn + "League Battle: " + schedule['league']['mode'])
-        print(c.info + "5. " + schedule['league']['map-a'])
-        print(c.info + "6. " + schedule['league']['map-b'])
-        print(c.blank)
-        print(c.info + "7. Exit")
-        print(c.blank)
-        print(c.smile + "Splatoon 2 API provided by api.splatoon.terax235.me!")
+        print(c.warn + "Regular Battle (" + schedule['regular']['mode'] + ")")
+        print(c.info + "1. In Queue " + "| 2. " + schedule['regular']['map-a'] + " | 3. " + schedule['regular']['map-b'])
+        print(c.warn + "Ranked Battle (" + schedule['ranked']['mode'] + ")")
+        print(c.info + "4. In Queue " + "| 5. " + schedule['ranked']['map-a'] + " | 6. " + schedule['ranked']['map-b'])
+        print(c.warn + "League Battle (" + schedule['league']['mode'] + ")")
+        print(c.info + "7. In Queue " + "| 8. " + schedule['league']['map-a'] + " | 9. " + schedule['league']['map-b'])
+        print(c.warn + "0. Cancel")
         option = ''
         while option == '':
-            print(c.info + "Which game are you in?")
             try:
-                option = int(input(c.ask))
+                if status.currqueue == '':
+                    option = int(input(c.ask + "Select an option: "))
+                else:
+                    option = int(input(c.ask + "Select an option (currently set to " + status.currqueue + ": " + status.currmode + " - " + status.currmap + "): "))
             except Exception as e:
                 print(c.warn + "Invalid input!")
                 option = ''
                 continue
             if option == 1:
-                setPresence(None,details="Regular Battle",state=schedule['regular']['mode'],large_image=schedule['regular']['map-a-id'],large_text=schedule['regular']['map-a'],small_image=schedule['regular']['mode-key'],small_text=schedule['regular']['mode'])
+                setPresence(None,details="Regular Battle",state="In Queue",large_image="splatfest",large_text="In Queue",small_image=schedule['regular']['mode-key'],small_text=schedule['regular']['mode'])
             elif option == 2:
-                setPresence(None,details="Regular Battle",state=schedule['regular']['mode'],large_image=schedule['regular']['map-b-id'],large_text=schedule['regular']['map-b'],small_image=schedule['regular']['mode-key'],small_text=schedule['regular']['mode'])
+                setPresence(None,details="Regular Battle",state=schedule['regular']['mode'],large_image=schedule['regular']['map-a-id'],large_text=schedule['regular']['map-a'],small_image=schedule['regular']['mode-key'],small_text=schedule['regular']['mode'])
             elif option == 3:
-                setPresence(None,details="Ranked Battle",state=schedule['ranked']['mode'],large_image=schedule['ranked']['map-a-id'],large_text=schedule['ranked']['map-a'],small_image=schedule['ranked']['mode-key'],small_text=schedule['ranked']['mode'])
+                setPresence(None,details="Regular Battle",state=schedule['regular']['mode'],large_image=schedule['regular']['map-b-id'],large_text=schedule['regular']['map-b'],small_image=schedule['regular']['mode-key'],small_text=schedule['regular']['mode'])
             elif option == 4:
-                setPresence(None,details="Ranked Battle",state=schedule['ranked']['mode'],large_image=schedule['ranked']['map-b-id'],large_text=schedule['ranked']['map-b'],small_image=schedule['ranked']['mode-key'],small_text=schedule['ranked']['mode'])
+                setPresence(None,details="Ranked Battle",state="In Queue",large_image="splatfest",large_text="In Queue",small_image=schedule['ranked']['mode-key'],small_text=schedule['ranked']['mode'])
             elif option == 5:
-                setPresence(None,details="League Battle",state=schedule['league']['mode'],large_image=schedule['league']['map-a-id'],large_text=schedule['league']['map-a'],small_image=schedule['league']['mode-key'],small_text=schedule['league']['mode'])
+                setPresence(None,details="Ranked Battle",state=schedule['ranked']['mode'],large_image=schedule['ranked']['map-a-id'],large_text=schedule['ranked']['map-a'],small_image=schedule['ranked']['mode-key'],small_text=schedule['ranked']['mode'])
             elif option == 6:
-                setPresence(None,details="League Battle",state=schedule['league']['mode'],large_image=schedule['league']['map-b-id'],large_text=schedule['league']['map-b'],small_image=schedule['league']['mode-key'],small_text=schedule['league']['mode'])
+                setPresence(None,details="Ranked Battle",state=schedule['ranked']['mode'],large_image=schedule['ranked']['map-b-id'],large_text=schedule['ranked']['map-b'],small_image=schedule['ranked']['mode-key'],small_text=schedule['ranked']['mode'])
             elif option == 7:
+                setPresence(None,details="League Battle",state="In Queue",large_image="splatfest",large_text="In Queue",small_image=schedule['league']['mode-key'],small_text=schedule['league']['mode'])
+            elif option == 8:
+                setPresence(None,details="League Battle",state=schedule['league']['mode'],large_image=schedule['league']['map-a-id'],large_text=schedule['league']['map-a'],small_image=schedule['league']['mode-key'],small_text=schedule['league']['mode'])
+            elif option == 9:
+                setPresence(None,details="League Battle",state=schedule['league']['mode'],large_image=schedule['league']['map-b-id'],large_text=schedule['league']['map-b'],small_image=schedule['league']['mode-key'],small_text=schedule['league']['mode'])
+            elif option == 0:
                 print(c.success + "Cancelling...")
+                setPresence("square_silent")
                 return 1
             else:
                 print(c.warn + "Invalid input!")
@@ -185,6 +201,8 @@ try:
         }
 
         setPresence(None,details="Salmon Run",state=schedule['map'],large_image=schedule["map-key"],large_text=schedule['map'],small_image="salmon_run",small_text="Grizzco")
+
+        setStatus(0,"Salmon Run","Salmon Run",schedule['map'])
 
 
     def setSplatfest():
@@ -292,11 +310,11 @@ try:
             status.devmode = not status.devmode
 
             if status.devmode == True:
-                print(c.success + "Enabled development mode.")
-                clearPresence()
+                print(c.success + "Enabled development mode. Your presence has been set to Inkopolis Square.")
+                setPresence("square_silent")
             else:
-                print(c.success + "Disabled development mode.")
-                clearPresence()
+                print(c.success + "Disabled development mode. Your presence has been set to Inkopolis Square.")
+                setPresence("square_silent")
 
         elif command.startswith("!help"):
             showGreeting()
@@ -316,9 +334,10 @@ try:
             print(c.info + "!salmon - Set Salmon Run presence.")
             print(c.info + "!splatfest - Set Splatfest presence.")
             print(c.info + "!private - Set Private Battle presence.")
-            print(c.info + "!clear - Remove your presence from Discord.")
+            print(c.info + "!clear - Set your presence to Inkopolis Square/In Menus.")
+            print(c.info + "!fullclear - Fully remove your presence from Discord.")
 
-        elif command.startswith("!quit"):
+        elif command.startswith("!quit") or command.startswith("!exit"):
             print(c.success + "Quitting...")
             sys.exit(0)
 
@@ -330,8 +349,7 @@ try:
             if len(params) == 1:
                 print(c.warn + "You didn't add which sector you're in! Do !hero <sector>, for example if you're in Cephalon HQ, use !hero 5.")
             else:
-                options = ["1","2","3","4","5"]
-                if params[1] not in options:
+                if params[1] not in ["1","2","3","4","5"]:
                     print(c.warn + "That's not a valid option.")
                 else:
                     setPresence("single-" + params[1])
@@ -343,12 +361,11 @@ try:
             endloop = 0
             try:
                 while endloop != 1:
-                    print(c.warn + "To exit the loop, press CTRL+C.")
-                    endloop = setMulti()
+                    endloop = setMulti(loop=1)
             except KeyboardInterrupt:
-                print()
-                print(c.success + "Cancelling...")
+                print("\n" + c.success + "Cancelling...")
                 endloop = 1
+                setStatus(1)
                 continue
 
         elif command.startswith("!multi"):
@@ -364,9 +381,21 @@ try:
             setCustom()
 
         elif command.startswith("!clear"):
+            setPresence("square")
+
+        elif command.startswith("!fullclear"):
             clearPresence()
+
+        elif command.startswith("!checkvars"):
+            if status.devmode == 0:
+                print(c.fail + "You must be in developer mode for this command.")
+                continue
+            print(c.info + "Mode (details): " + status.currqueue)
+            print(c.info + "Mode (state): " + status.currmode)
+            print(c.info + "Mode (large_text): " + status.currmap)
+
         else:
-            print(c.fail + "Couldn't find that command! Do !help if you need a refresher, or check out the documentation at https://git.io/splat2.")
+            print(c.fail + "Couldn't find that command! Do !help or check the documentation at https://git.io/splat2.")
         continue
 
 
