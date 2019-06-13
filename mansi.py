@@ -16,10 +16,10 @@ class colours():
     fail = reset + red + "[✘] " + reset
     info = reset + blue + "[~] " + reset
     ask = reset + grey + "[?] " + reset
-    cmd = reset + orange + "[$] " + reset
+    cmd = reset + grey + "[$] " + reset
     success = reset + green + "[✓] " + reset
-    smile = reset + red + "[☺] " + reset
-    blank = reset + grey + "[#] "
+    smile = reset + red + "[ツ] " + reset
+    blank = reset + grey + "[X] "
 
 class nocolours():
     """

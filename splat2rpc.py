@@ -41,6 +41,13 @@ try:
             "single-5":["Hero Mode","Cephalon HQ","cephalon","Sector 5","maxic","Running splat2rpc v" + x.ver + " by maxic#9999! Download it at https://git.io/splat2 😊"]
         }
 
+    def fillSpaces(orig):
+        maxlen = 21
+        toadd = maxlen - len(orig)
+        for i in range(toadd):
+            orig = orig + " "
+        return orig
+
     def setStatus(clear,queue='',mode='',map=''):
         if clear == 1:
             status.currmode = ''
@@ -142,12 +149,12 @@ try:
             print(c.success + "Got the current modes! Here are your options...")
 
         print(c.warn + "Regular Battle (" + schedule['regular']['mode'] + ")")
-        print(c.info + "1. In Queue " + "| 2. " + schedule['regular']['map-a'] + " | 3. " + schedule['regular']['map-b'])
+        print(c.info + "1. In Queue " + "| 2. " + fillSpaces(schedule['regular']['map-a']) + " | 3. " + fillSpaces(schedule['regular']['map-b']))
         print(c.warn + "Ranked Battle (" + schedule['ranked']['mode'] + ")")
-        print(c.info + "4. In Queue " + "| 5. " + schedule['ranked']['map-a'] + " | 6. " + schedule['ranked']['map-b'])
+        print(c.info + "4. In Queue " + "| 5. " + fillSpaces(schedule['ranked']['map-a']) + " | 6. " + fillSpaces(schedule['ranked']['map-b']))
         print(c.warn + "League Battle (" + schedule['league']['mode'] + ")")
-        print(c.info + "7. In Queue " + "| 8. " + schedule['league']['map-a'] + " | 9. " + schedule['league']['map-b'])
-        print(c.warn + "0. Cancel")
+        print(c.info + "7. In Queue " + "| 8. " + fillSpaces(schedule['league']['map-a']) + " | 9. " + fillSpaces(schedule['league']['map-b']))
+        print(c.info + "0. Cancel   | Enter any other character to refresh maps and modes.")
         option = ''
         while option == '':
             try:
@@ -156,9 +163,8 @@ try:
                 else:
                     option = int(input(c.ask + "Select an option (currently set to " + status.currqueue + ": " + status.currmode + " - " + status.currmap + "): "))
             except Exception as e:
-                print(c.warn + "Invalid input!")
-                option = ''
-                continue
+                print(c.success + "Refreshing...")
+                return 0
             if option == 1:
                 setPresence(None,details="Regular Battle",state="In Queue",large_image="splatfest",large_text="In Queue",small_image=schedule['regular']['mode-key'],small_text=schedule['regular']['mode'])
             elif option == 2:
@@ -182,9 +188,8 @@ try:
                 setPresence("square_silent")
                 return 1
             else:
-                print(c.warn + "Invalid input!")
-                option = ''
-                continue
+                print(c.success + "Refreshing...")
+                return 0
             return 0
 
     def setSalmon():
@@ -288,7 +293,7 @@ try:
             print(c.warn + "Something's wrong! The latest version on GitHub is " + str(onlver) + " and you're on " + x.ver + ".")
         else:
             print(c.success + "You're up-to-date! Thanks for using the latest version.")
-        print(c.info + "Questions? Comments? Feature requests? Head to https://git.io/splat2!")
+        print(c.warn + "Questions? Comments? Feature requests? Head to https://git.io/splat2!")
         print(c.blank + random.choice(["Don't get cooked, stay off the hook!","Staaaay fresh!"]))
 
     # Initialise the Discord Presence using pypresence then connect to Discord
