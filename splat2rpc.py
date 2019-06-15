@@ -226,8 +226,6 @@ try:
         print(c.warn + "Here are the teams for this Splatfest!")
         print(c.info + "1. " + schedule['phrases']['alpha_long'])
         print(c.info + "2. " + schedule['phrases']['bravo_long'])
-        print(c.blank)
-        print(c.info + "3. Exit")
         option = ''
         while option == '':
             print(c.info + "Which team are you supporting?")
@@ -238,9 +236,9 @@ try:
                 option = ''
                 continue
             if option == 1:
-                setPresence(None,details="Splatfest",state="Team " + schedule['phrases']['alpha_short'],large_image="splatfest",large_text="Shifty Station",small_image="turf_war",small_text="Turf War")
+                setPresence(None,details="Splatfest Battle",state="Team " + schedule['phrases']['alpha_short'],large_image="splatfest",large_text="Shifty Station",small_image="turf_war",small_text="Turf War")
             elif option == 2:
-                setPresence(None,details="Splatfest",state="Team " + schedule['phrases']['bravo_short'],large_image="splatfest",large_text="Shifty Station",small_image="turf_war",small_text="Turf War")
+                setPresence(None,details="Splatfest Battle",state="Team " + schedule['phrases']['bravo_short'],large_image="splatfest",large_text="Shifty Station",small_image="turf_war",small_text="Turf War")
             elif option == 3:
                 print(c.success + "Cancelling...")
                 return
