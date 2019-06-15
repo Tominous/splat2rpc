@@ -116,6 +116,11 @@ try:
             pass
 
     def setMulti(loop=0):
+        splfschedule = getSchedules("splf")
+        if "active" not in splfschedule and "false" not in splfschedule and int(time.time()) > int(splfschedule[0]['times']['start']) and int(time.time()) < int(splfschedule[0]['times']['end']):
+            print(c.fail + "There's a Splatfest going on! Use !splatfest to set your presence.")
+            return
+
         jsonschedule = getSchedules("main")
         # {regular:[mode,mode-key,map-a,map-a-key,map-b,map-b-key]}
         schedule = {
@@ -223,7 +228,28 @@ try:
             print(c.fail + "The next Splatfest hasn't started yet! Come back soon.")
             return
 
-        print(c.warn + "Here are the teams for this Splatfest!")
+        np = ''
+        while np == '':
+            print(c.info + "Are you playing Normal or Pro mode?")
+            print(c.info + "1. Normal | 2. Pro")
+            try:
+                np = int(input(c.ask))
+            except Exception as e:
+                print(c.warn + "Invalid input!")
+                print("Exception")
+                np = ''
+                continue
+            if np == 1:
+                np = "Normal"
+            elif np == 2:
+                np = "Pro"
+            else:
+                print(c.warn + "Invalid input!")
+                option = ''
+                continue
+
+
+        print(c.warn + "Here are the options for this Splatfest!")
         print(c.info + "1. " + schedule['phrases']['alpha_long'])
         print(c.info + "2. " + schedule['phrases']['bravo_long'])
         option = ''
@@ -236,12 +262,9 @@ try:
                 option = ''
                 continue
             if option == 1:
-                setPresence(None,details="Splatfest Battle",state="Team " + schedule['phrases']['alpha_short'],large_image="splatfest",large_text="Shifty Station",small_image="turf_war",small_text="Turf War")
+                setPresence(None,details="Splatfest Battle (" + np + ")",state="Team " + schedule['phrases']['alpha_short'],large_image="splatfest",large_text="Shifty Station",small_image="turf_war",small_text="Turf War")
             elif option == 2:
-                setPresence(None,details="Splatfest Battle",state="Team " + schedule['phrases']['bravo_short'],large_image="splatfest",large_text="Shifty Station",small_image="turf_war",small_text="Turf War")
-            elif option == 3:
-                print(c.success + "Cancelling...")
-                return
+                setPresence(None,details="Splatfest Battle (" + np + ")",state="Team " + schedule['phrases']['bravo_short'],large_image="splatfest",large_text="Shifty Station",small_image="turf_war",small_text="Turf War")
             else:
                 print(c.warn + "Invalid input!")
                 option = ''
