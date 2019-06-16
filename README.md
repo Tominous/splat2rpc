@@ -10,7 +10,7 @@
 
 *Thanks to [splat2api](https://github.com/splat2api/api) and [@Terax235](https://github.com/Terax235) for providing the data used for this application!*
 
-*promo image coming soon (as soon as I get access to a Windows computer lol)
+![Hero image](https://i.imgur.com/tJ7NB4P.png)
 
 ###### Splatoon 2 + Discord Rich Presence = <3
 
