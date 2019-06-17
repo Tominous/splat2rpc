@@ -117,9 +117,11 @@ try:
 
     def setMulti(loop=0):
         splfschedule = getSchedules("splf")
-        if "active" not in splfschedule and "false" not in splfschedule and int(time.time()) > int(splfschedule[0]['times']['start']) and int(time.time()) < int(splfschedule[0]['times']['end']):
-            print(c.fail + "There's a Splatfest going on! Use !splatfest to set your presence.")
-            return
+
+        if "times" in splfschedule:
+                if int(time.time()) > int(splfschedule['start']) or int(time.time()) < int(splfschedule['end']):
+                    print(c.fail + "There's a Splatfest going on right now! Come back later.")
+                    return
 
         jsonschedule = getSchedules("main")
         # {regular:[mode,mode-key,map-a,map-a-key,map-b,map-b-key]}
@@ -199,7 +201,7 @@ try:
 
     def setSalmon():
         jsonschedule = getSchedules("salm")
-        if "active" in jsonschedule and "false" in jsonschedule:
+        if "weapons" not in jsonschedule:
             print(c.fail + "Salmon Run is closed right now! Come back soon.")
             return
 
@@ -217,6 +219,10 @@ try:
 
     def setSplatfest():
         jsonschedule = getSchedules("splf")
+
+        if ("times" not in jsonschedule) or ("active" in jsonschedule and "false" in jsonschedule):
+            print(c.fail + "The next Splatfest hasn't started yet! Come back soon.")
+            return
 
         schedule = {
             "start": str(jsonschedule[0]['times']['start']),
